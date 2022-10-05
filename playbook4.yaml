@@ -1,0 +1,24 @@
+---
+- name: My super play book
+  hosts: all
+  become: yes
+
+  vars:
+    message1: Hello
+    message2: World
+    secret : Denis Daniel Leibovich
+
+
+  tasks:
+  - name: Print Secret Variable
+    debug:
+      var: secret
+
+  - debug:
+      msg: "Hello Levana: {{ secret }}"
+
+  - debug:
+      var: full_message
+
+  - debug:
+      var: ansible_distribution

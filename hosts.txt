@@ -1,0 +1,12 @@
+[SERVER1]
+linux1 ansible_host=3.137.177.2
+
+
+[SERVER2]
+linux2 ansible_host=18.220.248.89
+
+
+[SERVER3]
+linux3 ansible_host=18.117.154.135
+
+
