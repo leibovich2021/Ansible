@@ -1,5 +1,5 @@
 ---
-- name: Install Apache and Upload my Home Page
+- name: install Apache and Upload my Home Page
   hosts: all
   become: yes
 
