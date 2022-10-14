@@ -1,0 +1,37 @@
+---
+- name: Install Apache and Upload my Home Page
+  hosts: all
+  become: yes
+
+  vars:
+    soutce_folder: ./MyWebSite
+    destin_folder: /var/www/html
+
+
+
+  tasks:
+    - block:
+        - name: Install Apache Web Server
+          apt: name=apache2 state=latest
+        - name: Start Web Server service for Linux
+          service: name=apache2 state=started enabled=yes
+      when: ansible_os_family =="Linux"
+
+    - name: Generate INDEX.HTML file
+      template: src={{ source_folder }}/index.j2 dest={{ destin_folder }}/index.html mode=0555
+      notify:
+        - Restart apache Linux
+
+    - name: Copy HomePage file to Web Server
+      copy: src={{ source_folder }}/{{ item }} dest={{ destin_folder }} mode=0555
+      loop:
+        - B1.jpg
+        - B2.jpg
+
+      notify:
+        - Restart apache Linux
+
+  handlers:
+    - name: Restart apache Linux
+      service: name=httpd state=restarted
+      when: ansible_os_family =="Linux"
