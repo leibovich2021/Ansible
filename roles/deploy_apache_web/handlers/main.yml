@@ -1,0 +1,5 @@
+---
+
+- name: Restart Apache RedHat
+  service: name=httpd state=restarted
+  

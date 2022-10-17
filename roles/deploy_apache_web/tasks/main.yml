@@ -1,0 +1,21 @@
+---
+# tasks file for deploy_apache_web
+- block:
+    - name: Install Apache Web Server
+      yum: name=httpd state=latest
+    - name: Start Web Server service for RedHat
+      service: name=httpd state=started enabled=yes
+
+- name: Generate INDEX.HTML file
+  template: src=index.j2 dest={{ destin_folder }}/index.html mode=0555
+  notify:
+    - Restart Apache RedHat
+
+- name: Copy HomePage file to Web Server
+  copy: src={{ item }} dest={{ destin_folder }} mode=0555
+  loop:
+    - "b1.jpg"
+    - "b1.jpg"
+
+  notify:
+    - Restart Apache RedHat
