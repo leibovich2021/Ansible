@@ -1,0 +1,23 @@
+---
+- name: ansible Lessom
+  hosts: all
+  become: yes
+
+  tasks:
+  - name: Task Number1
+    yum: name=treee state=latest
+    ignore_errors: yes
+
+  - name: Task Number2
+    shell: echo Hello Denis
+    register: results
+    failed_when: "'Hello' in results.stdout"
+
+
+  - debug: 
+      var: results
+
+
+
+  - name: Task Number3
+    shell: echo Hello Denissss
