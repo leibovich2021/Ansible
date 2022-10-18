@@ -1,0 +1,55 @@
+---
+
+- name: My Super Playbook
+  hosts: all
+  become: yes
+
+
+  vars:
+    mytext: "Hello Denis Leibovichfrommm levanaaaaa"
+
+  tasks:
+  - name: Ping test
+    ping:
+
+  - name: Unregister Server from Load Balancer
+    shell: echo This server {{ inventory_hostname }} was deregistered from our Load Balancer, node name is {{ ansible_nodename }} >> /home/log.txt
+    delegate_to: 127.0.0.1
+
+  - name: Update my Database
+    shell: echo UPDATING Database...
+    run_once: true    
+
+  - name: Create file1
+    copy:
+      dest: /home/file1.txt
+      content: |
+        This is FileN1
+        Text Line1, in file1
+        Text Line2, in file1
+        Text Line3, {{ mytext }}
+    delegate_to: linux1
+
+  - name: Create file2
+    copy:
+      dest: /home/file2.txt
+      content: |
+        This is FileN2
+        Text Line1, in file2
+        Text Line2, in file2
+        Text Line3, {{ mytext }}
+
+
+  - name: Reboot my servers
+    shell: sleep 5 && reboot now
+    async: 1
+    poll: 0 
+
+
+  - name: Wait till my server will come up online
+    wait_for:
+      host: "{{ inventory_hostname }}"
+      state: started
+      delay: 5 
+      timeout: 5
+    delegate_to: 127.0.0.1
