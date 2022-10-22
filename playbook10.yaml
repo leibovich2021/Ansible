@@ -1,0 +1,28 @@
+---
+- name: Ansible 
+  hosts: all
+  become: yes
+
+  vars:
+    admin_password: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          30363839616131663962373332663136303061656438616439343532356561306438373031346333
+          6438323736333863326133343664366464386462626531390a653833306433363363626338373564
+          37346366616639623161653266666134306263623139346538626363623637623737633866343336
+          6630353233363663370a303463383735343564393362326136373637303732633736333839616362
+          3161
+
+
+  tasks:
+  - name: Install package Tree
+    yum: name=tree state=latest
+
+  - name: Create Config file
+    copy:
+      dest: "/home/ec2-user/myconfig.conf"
+      content: |
+        port = 9092
+        log = 7days
+        home = /opt/kafka/bin/
+        user = admin
+        password = {{ admin_password }}
